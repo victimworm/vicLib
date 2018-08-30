@@ -9,6 +9,7 @@ import android.os.Message;
 import java.util.ArrayList;
 
 import giaohangtietkiem.vn.printer.Interfaces.IFSimpleCallbackController;
+import giaohangtietkiem.vn.printer.Objects.Package;
 import giaohangtietkiem.vn.printer.R;
 import giaohangtietkiem.vn.printer.Utils.Bitmap.BitmapLayout;
 import giaohangtietkiem.vn.printer.Utils.Bitmap.BitmapLayoutComponent;
@@ -73,47 +74,47 @@ public class PrinterController {
         wifiCommunication.initSocket(ip, PRINTER_PORT);
     }
 
-    @SuppressLint("HandlerLeak")
-    public void printPackageList(final ArrayList<Package> pkgs, final IFSimpleCallbackController callback) {
-        wifiCommunication = new WifiCommunication(new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                switch (msg.what) {
-                    case WifiCommunication.WFPRINTER_CONNECTED: {
-                        SendDataToPrintKeepConnThread printDataThread = new SendDataToPrintKeepConnThread(pkgs, printerStatus, context);
-                        printDataThread.wfComm = wifiCommunication;
-                        printDataThread.start();
-                        callback.onSuccess("Connect the WIFI-printer successful");
-                        break;
-                    }
-                    case WifiCommunication.WFPRINTER_DISCONNECTED: {
-                        callback.onSuccess("Disconnect the WIFI-printer successful");
-                        break;
-                    }
-                    case WifiCommunication.SEND_FAILED: {
-                        callback.onFailure("Send Data Failed,please reconnect");
-                        break;
-                    }
-                    case WifiCommunication.WFPRINTER_CONNECTEDERR: {
-                        callback.onFailure("Connect the WIFI-printer error");
-                        break;
-                    }
-                    case WFPRINTER_REVMSG: {
-                        byte revData = (byte) Integer.parseInt(msg.obj.toString());
-                        if (((revData >> 6) & 0x01) == 0x01) {
-                            callback.onFailure("The printer has no paper");
-                        }
-                        break;
-                    }
-                    default: {
-                        break;
-                    }
-                }
-            }
-        });
-
-        wifiCommunication.initSocket(Constant.printerIp, PRINTER_PORT);
-    }
+//    @SuppressLint("HandlerLeak")
+//    public void printPackageList(final ArrayList<Package> pkgs, final IFSimpleCallbackController callback) {
+//        wifiCommunication = new WifiCommunication(new Handler() {
+//            @Override
+//            public void handleMessage(Message msg) {
+//                switch (msg.what) {
+//                    case WifiCommunication.WFPRINTER_CONNECTED: {
+//                        SendDataToPrintKeepConnThread printDataThread = new SendDataToPrintKeepConnThread(pkgs, printerStatus, context);
+//                        printDataThread.wfComm = wifiCommunication;
+//                        printDataThread.start();
+//                        callback.onSuccess("Connect the WIFI-printer successful");
+//                        break;
+//                    }
+//                    case WifiCommunication.WFPRINTER_DISCONNECTED: {
+//                        callback.onSuccess("Disconnect the WIFI-printer successful");
+//                        break;
+//                    }
+//                    case WifiCommunication.SEND_FAILED: {
+//                        callback.onFailure("Send Data Failed,please reconnect");
+//                        break;
+//                    }
+//                    case WifiCommunication.WFPRINTER_CONNECTEDERR: {
+//                        callback.onFailure("Connect the WIFI-printer error");
+//                        break;
+//                    }
+//                    case WFPRINTER_REVMSG: {
+//                        byte revData = (byte) Integer.parseInt(msg.obj.toString());
+//                        if (((revData >> 6) & 0x01) == 0x01) {
+//                            callback.onFailure("The printer has no paper");
+//                        }
+//                        break;
+//                    }
+//                    default: {
+//                        break;
+//                    }
+//                }
+//            }
+//        });
+//
+//        wifiCommunication.initSocket(Constant.printerIp, PRINTER_PORT);
+//    }
 
     @SuppressLint("HandlerLeak")
     public void printImage(final Bitmap bm, final IFSimpleCallbackController callback) {
@@ -211,7 +212,7 @@ public class PrinterController {
 //        bitMapLayout.setPadding(3);
 //        bitMapLayout.setBorderRadius(5);
 
-        bitMapLayout.addComponent(BitmapLayout.COMPONENT_IMAGE_CONTENT, new BitmapLayoutComponent(R.drawable.swing, 10, 10, 233, 308, true, true));
+        bitMapLayout.addComponent(BitmapLayout.COMPONENT_IMAGE_CONTENT, new BitmapLayoutComponent(R.drawable.postoffice, 10, 10, 300, 300, true, true));
 
         bitmap = bitMapLayout.createBitmapLayout();
         return bitmap;

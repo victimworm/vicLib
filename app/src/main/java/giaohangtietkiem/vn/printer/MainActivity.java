@@ -12,8 +12,10 @@ import android.widget.Toast;
 
 import giaohangtietkiem.vn.printer.Controller.PrinterController;
 import giaohangtietkiem.vn.printer.Interfaces.IFSimpleCallbackController;
+import giaohangtietkiem.vn.printer.Objects.Package;
 import giaohangtietkiem.vn.printer.Utils.Constant;
 import giaohangtietkiem.vn.printer.Views.CircleView;
+import giaohangtietkiem.vn.printer.Views.LabelView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,7 +42,8 @@ public class MainActivity extends AppCompatActivity {
         btnPrinter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bitmap bm = PrinterController.instance(getApplicationContext()).generateBitmap();
+//                Bitmap bm = PrinterController.instance(getApplicationContext()).generateBitmap();
+                Bitmap bm = LabelView.getInstance(getApplicationContext()).generateBitmap(new Package());
                 imgPreview.setImageBitmap(bm);
                 PrinterController.instance(getApplicationContext()).printImage(bm, new IFSimpleCallbackController() {
                     @Override
